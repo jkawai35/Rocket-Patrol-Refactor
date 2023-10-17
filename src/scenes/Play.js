@@ -52,10 +52,22 @@ class Play extends Phaser.Scene{
             align: "right",
             padding:{
                 top: 5,
-                 bottom: 5,
+                bottom: 5,
                 },
                 fixedWidth: 100
             };
+        let hsConfig = {
+            fontFamily: "Courier",
+            fontSize: "20px",
+            backgroundColor: "#000",
+            color: "#FFF",
+            align: "center",
+            padding: {
+                top: 7,
+                bottom: 7,
+            },
+            fixedWidth: 0
+        };
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
 
     
@@ -68,9 +80,12 @@ class Play extends Phaser.Scene{
         //create game clock
         scoreConfig.fixedWidth = 0;
         
+        //create game timer variable
         this.timer = game.settings.gameTimer;
         this.timerUpdate();
 
+        //high score variable
+        this.highScoretext = this.add.text(game.config.width/2, 20, "High Score:" + highScore, hsConfig).setOrigin(0.5);
     }
 
     update(){
@@ -159,6 +174,12 @@ class Play extends Phaser.Scene{
             this.add.text(game.config.width/2, game.config.height/2, "GAME OVER", timerConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, "Press (R) to Restart or ← for Menu", timerConfig).setOrigin(0.5);
             this.gameOver = true;
+
+            //check high score
+            if (this.p1Score > highScore){
+                highScore = this.p1Score;
+                this.highScoretext.text = "High Score:" + highScore;
+            }
         }
         else{
             this.time.delayedCall(1000, this.timerUpdate, null, this)

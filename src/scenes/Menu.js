@@ -49,9 +49,17 @@ class Menu extends Phaser.Scene{
         menuConfig.backgroundColor = "#44F019";
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 125, "Shoot the spaceships to earn more points and time!", menuConfig).setOrigin(0.5);
 
-    
+        //set keys for menu
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+
+        //set high score text
+        this.highScore = 0;
+        menuConfig.fontSize = "20px";
+        menuConfig.backgroundColor = "#000";
+        menuConfig.color = "#FFF";
+        menuConfig.fontFamily = "Courier";
+        this.add.text(game.config.width/2, 20, "High Score:" + highScore, menuConfig).setOrigin(0.5);
     }
 
     update(){
@@ -59,7 +67,7 @@ class Menu extends Phaser.Scene{
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)){
             game.settings = {
                 spaceshipSpeed: 3,
-                gameTimer: 60000
+                gameTimer: 60000,
             }
             this.sound.play("sfx_select");
             this.scene.start("playScene");
@@ -68,7 +76,7 @@ class Menu extends Phaser.Scene{
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             game.settings = {
                 spaceshipSpeed: 4,
-                gameTimer: 45000
+                gameTimer: 45000,
             }
             this.sound.play("sfx_select");
             this.scene.start("playScene");

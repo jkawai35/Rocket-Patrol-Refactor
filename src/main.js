@@ -7,7 +7,7 @@
 //  Display time remaining - 3pts x
 //  4 New explosion sounds - 3 pts x
 //  New title screen - 3pts x
-//  High score - 1pts
+//  High score - 1pts x
 //Sources used:
 //  All sounds taken from mixkit https://mixkit.co/free-sound-effects/explosion/
 let config = {
@@ -24,3 +24,6 @@ let keyF, keyR, keyLEFT, keyRIGHT;
 //set UI sizes
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
+
+//set high score
+let highScore = 0;
