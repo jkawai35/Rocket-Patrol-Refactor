@@ -47,11 +47,13 @@ class Menu extends Phaser.Scene{
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 75, "Press ← for Novice or → for Expert", menuConfig).setOrigin(0.5);
 
         menuConfig.backgroundColor = "#44F019";
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 125, "Shoot the spaceships to earn more points and time!", menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 125, "↑ for 2 player Novice or ↓ for 2 player Expert", menuConfig).setOrigin(0.5);
 
         //set keys for menu
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
         //set high score text
         this.highScore = 0;
@@ -80,6 +82,26 @@ class Menu extends Phaser.Scene{
             }
             this.sound.play("sfx_select");
             this.scene.start("playScene");
+        }
+        //check two player expert
+        if (Phaser.Input.Keyboard.JustDown(keyDOWN)){
+            game.settings = {
+                spaceshipSpeed: 4,
+                gameTimer: 45000,
+            }
+            this.sound.play("sfx_select");
+            this.scene.start("playScene");
+            twoPlayer = true;
+        }
+        //check two player novice
+        if (Phaser.Input.Keyboard.JustDown(keyUP)){
+            game.settings = {
+                spaceshipSpeed: 3,
+                gameTimer: 60000,
+            }
+            this.sound.play("sfx_select");
+            this.scene.start("playScene");
+            twoPlayer = true;
         }
     }
 }

@@ -10,6 +10,8 @@
 //  High score - 1pts x
 //Sources used:
 //  All sounds taken from mixkit https://mixkit.co/free-sound-effects/explosion/
+//  Generating random numbers https://www.w3schools.com/jsref/jsref_random.asp#:~:text=JavaScript%20Math.random()&text=The%20Math.random()%20method,not%20including%201%20(exclusive).
+
 let config = {
     type: Phaser.AUTO,
     width: 640,
@@ -19,7 +21,7 @@ let config = {
 let game = new Phaser.Game(config);
 
 //reserve keyboard vars
-let keyF, keyR, keyLEFT, keyRIGHT;
+let keyF, keyR, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyT;
 
 //set UI sizes
 let borderUISize = game.config.height / 15;
@@ -27,3 +29,10 @@ let borderPadding = borderUISize / 3;
 
 //set high score
 let highScore = 0;
+
+//set two player score
+let scoreTobeat = 0;
+
+//set multiplayer
+let twoPlayer = false;
+let playertwoturn = false;

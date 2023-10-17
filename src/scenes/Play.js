@@ -33,8 +33,11 @@ class Play extends Phaser.Scene{
         //define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     
         //animation settings
         this.anims.create({
@@ -69,7 +72,7 @@ class Play extends Phaser.Scene{
             fixedWidth: 0
         };
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
-
+        this.p1turn = this.add.text(borderUISize + 240, borderUISize + borderPadding * 2, scoreTobeat, scoreConfig)
     
         //GAME OVER
         this.gameOver = false;
@@ -90,14 +93,20 @@ class Play extends Phaser.Scene{
 
     update(){
         //restart
-        if (this.gameOver & Phaser.Input.Keyboard.JustDown(keyR)){
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR) && !twoPlayer){
             this.scene.restart();
         }
 
         //return to menu
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT) && !playertwoturn){
             this.scene.start("menuScene");
         }
+
+        //start second player
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyT) && playertwoturn){
+            this.scene.restart();
+        }
+
 
         this.starfield.tilePositionX -= 4;
 
@@ -171,15 +180,52 @@ class Play extends Phaser.Scene{
             };
         timerConfig.fixedWidth = 0;
         if (this.timer == 0){
-            this.add.text(game.config.width/2, game.config.height/2, "GAME OVER", timerConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, "Press (R) to Restart or ← for Menu", timerConfig).setOrigin(0.5);
-            this.gameOver = true;
+            if (!twoPlayer){
+                this.add.text(game.config.width/2, game.config.height/2, "GAME OVER", timerConfig).setOrigin(0.5);
+                this.add.text(game.config.width/2, game.config.height/2 + 64, "Press (R) to Restart or ← for Menu", timerConfig).setOrigin(0.5);
+                this.gameOver = true;
+            }
+            else{
+                if (!playertwoturn){
+                    this.add.text(game.config.width/2, game.config.height/2, "Player 1 turn over", timerConfig).setOrigin(0.5);
+                    this.add.text(game.config.width/2, game.config.height/2 + 64, "Press T for Player 2 turn", timerConfig).setOrigin(0.5);
+                    this.gameOver = true;
+                    playertwoturn = true;
+                }
+                else{
+                    if (this.p1Score > scoreTobeat){
+                        this.add.text(game.config.width/2, game.config.height/2, "Player 2 wins!", timerConfig).setOrigin(0.5);
+                    }
+                    else if(this.p1Score == scoreTobeat){
+                        this.add.text(game.config.width/2, game.config.height/2, "You tied!", timerConfig).setOrigin(0.5);
+                    }
+                    else{
+                        this.add.text(game.config.width/2, game.config.height/2, "Player 1 wins!", timerConfig).setOrigin(0.5);
+                    }
+                    this.add.text(game.config.width/2, game.config.height/2 + 64, "Press ← to go back to the Menu", timerConfig).setOrigin(0.5);
+                    this.gameOver = true;
+                    playertwoturn = false;
+                    scoreTobeat = 0;
+                }
+            }
 
             //check high score
             if (this.p1Score > highScore){
                 highScore = this.p1Score;
                 this.highScoretext.text = "High Score:" + highScore;
             }
+            if (this.p1Score > scoreTobeat){
+                scoreTobeat = this.p1Score;
+                if (twoPlayer){
+                    if(!this.gameOver){
+                        this.p1turn.text = scoreTobeat;
+                    }
+                    else{
+                        this.p1turn.text = 0;
+                    }
+                }
+            }
+
         }
         else{
             this.time.delayedCall(1000, this.timerUpdate, null, this)
