@@ -56,18 +56,21 @@ class Play extends Phaser.Scene{
                 },
                 fixedWidth: 100
             };
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
+
     
         //GAME OVER
         this.gameOver = false;
 
+
+        this.timerText = this.add.text(borderUISize + borderPadding + 455, borderUISize + borderPadding * 2, 0, scoreConfig);
+
         //create game clock
         scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, "GAME OVER", scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, "Press (R) to Restart or ← for Menu", scoreConfig).setOrigin(0.5);
-            this.gameOver = true;
-        }, null, this);
+        
+        this.timer = game.settings.gameTimer;
+        this.timerUpdate();
+
     }
 
     update(){
@@ -130,6 +133,39 @@ class Play extends Phaser.Scene{
         //score update
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
-        this.sound.play("sfx_explosion");
+
+        //decide and play explosion sound
+        const explosions = ["sfx_explosion1", "sfx_explosion2", "sfx_explosion3", "sfx_explosion4"];
+        this.sound.play(explosions[Math.floor(Math.random()*4)]);
+        this.timer += 5000;
+        this.timerText.text = 1 + this.timer / 1000;
     }
+
+    timerUpdate(){
+        let timerConfig = {
+            fontFamily: "Courier",
+            fontSize:"28px",
+            backgroundColor: "#F3B141",
+            color: "#843605",
+            align: "right",
+            padding:{
+                top: 5,
+                 bottom: 5,
+                },
+                fixedWidth: 100
+            };
+        timerConfig.fixedWidth = 0;
+        if (this.timer == 0){
+            this.add.text(game.config.width/2, game.config.height/2, "GAME OVER", timerConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, "Press (R) to Restart or ← for Menu", timerConfig).setOrigin(0.5);
+            this.gameOver = true;
+        }
+        else{
+            this.time.delayedCall(1000, this.timerUpdate, null, this)
+        }
+        this.timerText.text = this.timer / 1000;
+        this.timer -= 1000;
+    }
+
+
 }
