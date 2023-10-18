@@ -34,6 +34,7 @@ class Play extends Phaser.Scene{
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+        keyP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
@@ -72,7 +73,7 @@ class Play extends Phaser.Scene{
             fixedWidth: 0
         };
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
-        this.p1turn = this.add.text(borderUISize + 240, borderUISize + borderPadding * 2, scoreTobeat, scoreConfig)
+        this.p1turn = this.add.text(borderUISize + 240, borderUISize + borderPadding * 2, "P1:" + scoreTobeat, scoreConfig)
     
         //GAME OVER
         this.gameOver = false;
@@ -95,16 +96,25 @@ class Play extends Phaser.Scene{
         //restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR) && !twoPlayer){
             this.scene.restart();
+            scoreTobeat = 0;
         }
 
         //return to menu
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT) && !playertwoturn){
             this.scene.start("menuScene");
+            scoreTobeat = 0;
         }
 
         //start second player
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyT) && playertwoturn){
             this.scene.restart();
+        }
+
+        //start 2 player over again
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyP) && player2over){
+            this.scene.restart();
+            scoreTobeat = 0;
+            player2over = false;
         }
 
 
@@ -203,8 +213,10 @@ class Play extends Phaser.Scene{
                         this.add.text(game.config.width/2, game.config.height/2, "Player 1 wins!", timerConfig).setOrigin(0.5);
                     }
                     this.add.text(game.config.width/2, game.config.height/2 + 64, "Press ← to go back to the Menu", timerConfig).setOrigin(0.5);
+                    this.add.text(game.config.width/2, game.config.height/2 + 100, "Press P to play again", timerConfig).setOrigin(0.5);
                     this.gameOver = true;
                     playertwoturn = false;
+                    player2over = true;
                     scoreTobeat = 0;
                 }
             }
@@ -225,7 +237,6 @@ class Play extends Phaser.Scene{
                     }
                 }
             }
-
         }
         else{
             this.time.delayedCall(1000, this.timerUpdate, null, this)
@@ -233,6 +244,4 @@ class Play extends Phaser.Scene{
         this.timerText.text = this.timer / 1000;
         this.timer -= 1000;
     }
-
-
 }

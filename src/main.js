@@ -3,7 +3,7 @@
 //Time to complete assignment:
 //Mods:
 //  New timing method - 5pts x
-//  Mouse control - 5pts
+//  Two player mode - 5pts x
 //  Display time remaining - 3pts x
 //  4 New explosion sounds - 3 pts x
 //  New title screen - 3pts x
@@ -21,7 +21,7 @@ let config = {
 let game = new Phaser.Game(config);
 
 //reserve keyboard vars
-let keyF, keyR, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyT;
+let keyF, keyR, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyT, keyP;
 
 //set UI sizes
 let borderUISize = game.config.height / 15;
@@ -36,3 +36,4 @@ let scoreTobeat = 0;
 //set multiplayer
 let twoPlayer = false;
 let playertwoturn = false;
+let player2over = false;
