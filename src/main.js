@@ -2,7 +2,7 @@
 //Rocket Patrol II: Refactored
 //Time to complete assignment: 8 hours
 //Mods:
-//  New timing method - 5pts x
+//  New timing method, adds 2 seconds for hits - 5pts x
 //  Two player mode - 5pts x
 //  Display time remaining - 3pts x
 //  4 New explosion sounds - 3 pts x

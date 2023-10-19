@@ -171,7 +171,7 @@ class Play extends Phaser.Scene{
         //decide and play explosion sound
         const explosions = ["sfx_explosion1", "sfx_explosion2", "sfx_explosion3", "sfx_explosion4"];
         this.sound.play(explosions[Math.floor(Math.random()*4)]);
-        this.timer += 5000;
+        this.timer += 2000;
         this.timerText.text = 1 + this.timer / 1000;
     }
 
