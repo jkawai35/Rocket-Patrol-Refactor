@@ -1,6 +1,6 @@
 //Jaren Kawai
 //Rocket Patrol II: Refactored
-//Time to complete assignment:
+//Time to complete assignment: 8 hours
 //Mods:
 //  New timing method - 5pts x
 //  Two player mode - 5pts x
@@ -11,6 +11,7 @@
 //Sources used:
 //  All sounds taken from mixkit https://mixkit.co/free-sound-effects/explosion/
 //  Generating random numbers https://www.w3schools.com/jsref/jsref_random.asp#:~:text=JavaScript%20Math.random()&text=The%20Math.random()%20method,not%20including%201%20(exclusive).
+//  Received guidance from housemate (hasn't taken CMPM 120 and hasn't used Phaser, but knows JavaScript) - only for new timing method, only ideas given
 
 let config = {
     type: Phaser.AUTO,
